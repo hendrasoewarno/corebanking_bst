@@ -26,7 +26,7 @@ from cbterbilang import *
 class CoreBankingUI:
     def __init__(self):
         self.cabang="1271110101"
-        self.BSTAccount=LinkedListAccount()   
+        self.BSTAccount=BinarySearchTreeAccount()   
     
     #belum ada login dan pengenalan cabang
     def CB_Menu(self):
