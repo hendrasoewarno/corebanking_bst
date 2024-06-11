@@ -33,6 +33,38 @@ class Account:
     def print(self):
         print(self.noac.ljust(14), self.nama.ljust(50), self.nik.ljust(16))
 
+#kita tambahkan TrieNode
+class TrieNode:
+    def __init__(self):
+        self.childNode = {}
+        self.array = []
+
+#kita tambahkan Trie untuk pencarian akun berdasarkan nama
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+
+    # Function to insert a key into the Trie
+    def insert(self, account):
+        currentNode = self.root
+        for char in account.nama:
+            if char in currentNode.childNode:
+                currentNode.childNode[char]
+            else:
+                currentNode.childNode[char] = TrieNode()
+                
+            currentNode = currentNode.childNode[char]
+        currentNode.array.append(account)
+
+    # Function to search for a nama in the Trie
+    def search(self, nama):
+        currentNode = self.root
+        for char in nama:
+            if char not in currentNode.childNode:
+                return False
+            currentNode = currentNode.childNode[char]
+        return currentNode.array
+
 class AccountNode:
     def __init__(self, account):
         self.account=account
@@ -42,6 +74,8 @@ class AccountNode:
 class BinarySearchTreeAccount:
     def __init__(self):
         self.root=None
+        #buat trie untuk menyimpan account berdasarkan nama
+        self.trie=Trie() 
         self.count=0
         
     #non recursive approach
@@ -67,7 +101,11 @@ class BinarySearchTreeAccount:
                         lastPosition.right = newNode
                         break
                     else:
-                        lastPosition = lastPosition.right                        
+                        lastPosition = lastPosition.right
+                        
+        #tambahkan account ke Trie
+        self.trie.insert(account)
+                        
         return account
 
     #recursive approach
@@ -104,6 +142,15 @@ class BinarySearchTreeAccount:
         print("No.AC".ljust(14),"Nama".ljust(50),"NIK".ljust(16))
         print("-"*(80+3))
         self.listTree(self.root)
+        
+    def listByNama(self, nama):
+        print("\n\n>>DAFTAR ACCOUNT\n\n")
+        print("-"*(80+3))
+        print("No.AC".ljust(14),"Nama".ljust(50),"NIK".ljust(16))
+        print("-"*(80+3))
+        array=self.trie.search(nama)
+        for account in array:
+            account.print()
 
 
 #unit test
